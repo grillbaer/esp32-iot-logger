@@ -48,7 +48,7 @@ double ADS1115InputChannel::readRawValue()
 {
     ads->setGain(gain);
 
-    uint16_t rawReading;
+    int16_t rawReading;
     if (differential && adsChannel == 0)
         rawReading = ads->readADC_Differential_0_1();
     else if (differential && adsChannel == 1)
