@@ -26,7 +26,7 @@ uint16_t inputChannelCount = 6;
 
 void setupInput()
 {
-    Wire.begin(26, 25, 400000L);
+    Wire.begin(26, 25, 100000L);
     ads1.begin();
     ads2.begin();
 }

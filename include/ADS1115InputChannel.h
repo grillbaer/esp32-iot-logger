@@ -14,6 +14,8 @@ private:
     boolean differential;
     double adsReadingToVoltFactor;
 
+    int16_t readSingleValue();
+
 public:
     /**
      * Create a new input channel for an ADS1115 ADC converter.

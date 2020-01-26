@@ -44,21 +44,44 @@ ADS1115InputChannel::ADS1115InputChannel(Adafruit_ADS1115 *ads, adsGain_t gain, 
     };
 }
 
+int16_t ADS1115InputChannel::readSingleValue()
+{
+    if (differential && adsChannel == 0)
+        return ads->readADC_Differential_0_1();
+    else if (differential && adsChannel == 1)
+        return -(ads->readADC_Differential_0_1());
+    else if (differential && adsChannel == 2)
+        return ads->readADC_Differential_2_3();
+    else if (differential && adsChannel == 3)
+        return -(ads->readADC_Differential_2_3());
+    else
+        return ads->readADC_SingleEnded(adsChannel);
+}
+
+static int compareInt16(const void *a, const void *b)
+{
+    int16_t ia = *((int *)a);
+    int16_t ib = *((int *)b);
+    return (ia > ib) - (ia < ib);
+}
+
 double ADS1115InputChannel::readRawValue()
 {
+    const uint16_t samples = 5;
+    const uint32_t intervalMicros = 1000;
+
     ads->setGain(gain);
+ 
+    int16_t readings[samples];
+    for (uint16_t i = 0; i < samples; i++)
+    {
+        readings[i] = readSingleValue();
+        Serial.printf("%d ", (int)readings[i]);
+        delayMicroseconds(intervalMicros);
+    }
 
-    int16_t rawReading;
-    if (differential && adsChannel == 0)
-        rawReading = ads->readADC_Differential_0_1();
-    else if (differential && adsChannel == 1)
-        rawReading = -(ads->readADC_Differential_0_1());
-    else if (differential && adsChannel == 2)
-        rawReading = ads->readADC_Differential_2_3();
-    else if (differential && adsChannel == 3)
-        rawReading = -(ads->readADC_Differential_2_3());
-    else
-        rawReading = ads->readADC_SingleEnded(adsChannel);
+    qsort(readings, samples, sizeof(int16_t), compareInt16);
+    int16_t medianReading = readings[samples / 2];
 
-    return adsReadingToVoltFactor * rawReading;
+    return adsReadingToVoltFactor * medianReading;
 }

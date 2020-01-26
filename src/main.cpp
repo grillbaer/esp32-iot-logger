@@ -63,6 +63,7 @@ void loop()
 		Serial.print(inputChannels[i]->getName());
 		Serial.print("=");
 		Serial.printf(inputChannels[i]->getFormat(), inputChannels[i]->getValue());
+		delay(1); // try to fix sporadic wrong readings
 	}
 	Serial.println();
 
