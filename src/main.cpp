@@ -13,7 +13,7 @@ int blinky = 1;
 const uint32_t sampleIntervalMicros = 1000000L;
 uint32_t sampleStartMicros;
 
-const int16_t ingestIntervalSecs = 30;
+const int16_t ingestIntervalSecs = 60;
 int16_t ingestCountdown;
 
 const int watchdogTimeoutMicros = 40000000L;

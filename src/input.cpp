@@ -15,14 +15,14 @@ static Adafruit_ADS1115 ads2(0x49); // chip ADDR connected to VCC
 // - use measured calibration factors to compensate deviations of resistors and ADCs
 
 // voltage divider 47 kOhm - 4.7 kOhm, U2/(U1+U2) = R2/(R1+R2) => voltage[V] = 11 * ADC-voltage[V]
-ADS1115InputChannel ads1_1to0_U_in(&ads1, GAIN_ONE, 1, true, "So V", "%.2f", 11.0 * 1.008);
+ADS1115InputChannel ads1_1to0_U_in(&ads1, GAIN_TWO, 1, true, "So V", "%.2f", 11.0 * 1.008);
 // current shunt resistor 0.1 Ohm, U=R*I => current[mA] = 10 * 1e3 * ADC-voltage[V]
 ADS1115InputChannel ads1_3to2_I_in(&ads1, GAIN_SIXTEEN, 3, true, "So mA", "%.1f", 10e3 * 0.996);
 // P=U*I => power[mW] = voltage[V] * current[mA]
 ProductChannel Pin(&ads1_1to0_U_in, &ads1_3to2_I_in, "So mW");
 
 // voltage divider 47 kOhm - 4.7 kOhm, U2/(U1+U2) = R2/(R1+R2) => voltage[V] = 11 * ADC-voltage[V]
-ADS1115InputChannel ads2_1to0_U_bat(&ads2, GAIN_ONE, 1, true, "Ba V", "%.2f", 11.0 * 1.013);
+ADS1115InputChannel ads2_1to0_U_bat(&ads2, GAIN_TWO, 1, true, "Ba V", "%.2f", 11.0 * 1.013);
 // current shunt resistor 0.1 Ohm, U=R*I => current[mA] = 10 * 1e3 * ADC-voltage[V]
 ADS1115InputChannel ads2_3to2_I_bat(&ads2, GAIN_SIXTEEN, 3, true, "Ba mA", "%.1f", -10e3 * 1.008);
 // P=U*I => power[mW] = voltage[V] * current[mA]
